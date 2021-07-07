@@ -6,7 +6,7 @@
 /*   By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/24 03:42:11 by lmartin           #+#    #+#             */
-/*   Updated: 2021/07/05 14:52:41 by kgale            ###   ########.fr       */
+/*   Updated: 2021/07/07 23:19:59 by kgale            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 typedef struct s_fork
 {
-	pthread_mutex_t	*fork_mutex;
+	pthread_mutex_t	*mutex;
 	int				last_numb;
 }				t_fork;
 
@@ -66,11 +66,11 @@ typedef struct		s_params
 	t_philosopher	*philosophers;
 }					t_params;
 
-
+void	*simulation(void *args);
 void	ft_init_params(t_params *params, int argc, char *argv[]);
-char			*ft_itoa(int n);
 void	ft_init_philosophers(t_params *params);
-//void	*simulation(void *args);
-void	*alive(void *args);
+void	throw_error(int error);
+void	ft_usleep(unsigned int n);
+void	thinking(t_philosopher *phi);
 
 #endif

@@ -15,7 +15,7 @@ static int	helper(int minus)
 		return (-1);
 }
 
-int	ft_atoi(const char *str)
+static int	ft_atoi(const char *str)
 {
 	int				minus;
 	long long int	output;
@@ -44,7 +44,7 @@ int	ft_atoi(const char *str)
 	return (minus * output);
 }
 
-static void	ft_is_digit(char * s)
+static void	ft_is_digit(char *s)
 {
 	int	i;
 
@@ -52,15 +52,15 @@ static void	ft_is_digit(char * s)
 	while (s[i])
 	{
 		if (s[i] < 48 || s[i] > 57)
-			{
-				printf("Error: Wrong argument format\n");
-				exit (-1);
-			};
+		{
+			printf("Error: Wrong argument format\n");
+			exit (-1);
+		}
 		i++;
 	}
 }
 
-void ft_init_params(t_params *params, int argc, char *argv[])
+void	ft_init_params(t_params *params, int argc, char *argv[])
 {
 	ft_is_digit(argv[1]);
 	params->times = malloc(sizeof(t_times));
@@ -79,10 +79,10 @@ void ft_init_params(t_params *params, int argc, char *argv[])
 	else
 		params->times->meal_number = -1;
 	params->philosophers = malloc(sizeof(t_philosopher));
-	 if (params->times->philo_number < 2 || params->times->meal_number   == 0
-	 	|| !(params->philosophers))
-	 {
-	 	printf("Error: Wrong arguments. the simulation won't work\n");
-	 	exit(0);
-	 }
+	if (params->times->philo_number < 2 || params->times->meal_number == 0
+		|| !(params->philosophers))
+	{
+		printf("Error: Wrong arguments. the simulation won't work\n");
+		exit(0);
+	}
 }

@@ -17,7 +17,9 @@ DIR_HEADERS =	./includes/
 DIR_SRCS	=	./srcs/
 SRCS			=	philosophers.c \
 					params_init.c \
-					philosophers_init.c
+					philosophers_init.c \
+					simulation.c \
+					simulation_helpers.c
 OBJS 		=	$(SRCS:%.c=$(DIR_OBJS)%.o)
 NAME 		=	philosophers
 

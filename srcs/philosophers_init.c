@@ -16,38 +16,26 @@ t_philosopher	*prev, int i, t_params *params)
 	if (!tmp->thread || !tmp->right_fork || !tmp->left_fork
 		|| !tmp->last_meal_time)
 		exit(-1);// function
-	tmp->right_fork->fork_mutex = malloc(sizeof(pthread_mutex_t));
+	tmp->right_fork->mutex = malloc(sizeof(pthread_mutex_t));
 	tmp->last_meal_mutex = malloc(sizeof(pthread_mutex_t));
-	if (!tmp->right_fork->fork_mutex || !tmp->last_meal_mutex
-		|| pthread_mutex_init(tmp->right_fork->fork_mutex, NULL)
+	if (!tmp->right_fork->mutex || !tmp->last_meal_mutex
+		|| pthread_mutex_init(tmp->right_fork->mutex, NULL)
 		|| pthread_mutex_init(tmp->last_meal_mutex, NULL))
 		exit(-1);//should be a function
 }
 
-void	ft_init_philosophers(t_params *params)
+static	void	helper(t_philosopher *tmp, t_params *params)
 {
 	int				i;
-	t_philosopher	*tmp;
 	t_philosopher	*prev;
 
 	i = 1;
 	prev = NULL;
-	params->times->start_time = malloc(sizeof(struct timeval));
-	if (!params->times->start_time)
-	{
-		printf("Error with malloc\n");
-		exit(-1);//
-	}
-	gettimeofday(params->times->start_time, NULL);
-	tmp = params->philosophers;
 	while (i <= params->times->philo_number)
 	{
 		ft_malloc(tmp, prev, i, params);
 		if (!tmp)
-		{
-			printf("Error with malloc\n");
-			exit(-1);//
-		}
+			exit(-1);//printf("Error with malloc\n");
 		tmp->number = i;
 		tmp->meal_count = 0;
 		tmp->last_meal_time->tv_sec = params->times->start_time->tv_sec;
@@ -61,5 +49,19 @@ void	ft_init_philosophers(t_params *params)
 		tmp = tmp->next;
 		i++;
 	}
+}
 
+void	ft_init_philosophers(t_params *params)
+{
+	t_philosopher	*tmp;
+
+	params->times->start_time = malloc(sizeof(struct timeval));
+	if (!params->times->start_time)
+	{
+		printf("Error with malloc\n");
+		exit(-1);//
+	}
+	gettimeofday(params->times->start_time, NULL);
+	tmp = params->philosophers;
+	helper(tmp, params);
 }
