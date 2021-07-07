@@ -1,4 +1,4 @@
-#include "../includes/philosophers.h"
+#include "philosophers.h"
 
 static void	ft_malloc(t_philosopher *tmp,
 t_philosopher	*prev, int i, t_params *params)
@@ -9,7 +9,7 @@ t_philosopher	*prev, int i, t_params *params)
 		tmp->left_fork = prev->right_fork;
 	else
 		tmp->left_fork = malloc (sizeof(t_fork));
-	if (i == params->philo_number)
+	if (i == params->times->philo_number)
 		tmp->right_fork = params->philosophers->left_fork;
 	else
 		tmp->right_fork = malloc(sizeof(t_fork));
@@ -22,7 +22,6 @@ t_philosopher	*prev, int i, t_params *params)
 		|| pthread_mutex_init(tmp->right_fork->fork_mutex, NULL)
 		|| pthread_mutex_init(tmp->last_meal_mutex, NULL))
 		exit(-1);//should be a function
-	prev = tmp;
 }
 
 void	ft_init_philosophers(t_params *params)
@@ -33,33 +32,34 @@ void	ft_init_philosophers(t_params *params)
 
 	i = 1;
 	prev = NULL;
-	params->start_time = malloc(sizeof(struct timeval));
-	if (!params->start_time)
+	params->times->start_time = malloc(sizeof(struct timeval));
+	if (!params->times->start_time)
 	{
 		printf("Error with malloc\n");
-		exit(-1);
+		exit(-1);//
 	}
-	gettimeofday(params->start_time, NULL);
+	gettimeofday(params->times->start_time, NULL);
 	tmp = params->philosophers;
-	while (i <= params->philo_number)
+	while (i <= params->times->philo_number)
 	{
 		ft_malloc(tmp, prev, i, params);
-		tmp->number = i;
-		tmp->meal_count = 0;
-		tmp->last_meal_time->tv_sec = params->start_time->tv_sec;
-		tmp->last_meal_time->tv_usec = params->start_time->tv_usec;
-		tmp->left_fork->last_numb = 0;
-		tmp->next = NULL;
-		if (i != params->philo_number)
-			tmp->next = malloc(sizeof(t_philosopher));
 		if (!tmp)
 		{
 			printf("Error with malloc\n");
-			exit(-1);
+			exit(-1);//
 		}
-		params->curr = tmp;
-		pthread_create(tmp->thread, NULL, simulation, params);
+		tmp->number = i;
+		tmp->meal_count = 0;
+		tmp->last_meal_time->tv_sec = params->times->start_time->tv_sec;
+		tmp->last_meal_time->tv_usec = params->times->start_time->tv_usec;
+		tmp->left_fork->last_numb = 0;
+		tmp->next = NULL;
+		if (i != params->times->philo_number)
+			tmp->next = malloc(sizeof(t_philosopher));
+		prev = tmp;
+		tmp->times = params->times;
 		tmp = tmp->next;
 		i++;
 	}
+
 }
