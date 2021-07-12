@@ -6,7 +6,7 @@
 /*   By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 17:28:27 by kgale             #+#    #+#             */
-/*   Updated: 2021/07/12 17:28:28 by kgale            ###   ########.fr       */
+/*   Updated: 2021/07/12 18:37:10 by kgale            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,28 @@ static void	wait_philosophers_utils(t_params *phi)
 		if (!ptr && c != phi->times->philo_number)
 		{
 			c *= 0;
-			if (!c)
-				ptr = phi->philosophers;
-			else
-				ptr = NULL;
+			ptr = phi->philosophers;
 		}
 	}
 }
 
 static void	wait_philosophers(t_params *phi)
 {
+	int				c;
+	size_t			nb;
 	t_philosopher	*ptr;
 
+	nb = phi->times->meal_number;
 	ptr = phi->philosophers;
+	c = 0;
 	while (ptr && !usleep(1000))
 	{
+		c += 1;
+		if (ptr->meal_count < nb)
+			c = 0;
 		if (!ptr->last_meal_time || !ptr->next)
 		{
-			if (ptr->last_meal_time && phi->times->philo_number > 0)
+			if (ptr->last_meal_time && c < phi->times->philo_number)
 				ptr = phi->philosophers;
 			else
 				ptr = NULL;
@@ -69,14 +73,18 @@ static void	wait_philosophers(t_params *phi)
 
 void	clean_philosopher(t_philosopher *phi)
 {
-	if (phi->left_fork)
+	if (phi)
 	{
-		pthread_mutex_destroy(phi->left_fork->mutex);
-		free(phi->left_fork->mutex);
-		free(phi->left_fork);
+		if (phi->left_fork)
+		{
+			pthread_mutex_destroy(phi->left_fork->mutex);
+			free(phi->left_fork->mutex);
+			free(phi->left_fork);
+		}
+		if (phi->thread)
+			free(phi->thread);
+		free(phi);
 	}
-	free(phi->thread);
-	free(phi);
 	phi = NULL;
 }
 

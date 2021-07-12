@@ -54,7 +54,7 @@ t_philosopher	*prev, int i, t_params *params)
 		ft_error(params);
 }
 
-void	unmake_pairs(t_params *phi)
+static void	unmake_pairs(t_params *phi)
 {
 	t_philosopher	*temp;
 	t_philosopher	*ptr;

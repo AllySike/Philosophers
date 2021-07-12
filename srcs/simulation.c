@@ -6,13 +6,13 @@
 /*   By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 17:28:22 by kgale             #+#    #+#             */
-/*   Updated: 2021/07/12 17:28:23 by kgale            ###   ########.fr       */
+/*   Updated: 2021/07/12 18:34:34 by kgale            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	eating(t_philosopher *phi)
+static int	eating(t_philosopher *phi)
 {
 	if (!phi->last_meal_time)
 		return (1);
@@ -29,7 +29,7 @@ int	eating(t_philosopher *phi)
 	return (0);
 }
 
-int	check_eating(t_philosopher *phi)
+static int	check_eating(t_philosopher *phi)
 {
 	int				ret;
 	struct timeval	time_action;
@@ -57,9 +57,9 @@ void	taking_forks(t_philosopher *phi)
 	struct timeval	time_act;
 
 	i = 0;
-	fork = phi->right_fork;
+	fork = phi->left_fork;
 	if ((phi->number + i) % 2)
-		fork = phi->left_fork;
+		fork = phi->right_fork;
 	while (i < 2)
 	{
 		if (fork->last_numb != phi->number)
@@ -71,9 +71,9 @@ void	taking_forks(t_philosopher *phi)
 			fork->last_numb = phi->number;
 			if (++i != 2)
 			{
-				fork = phi->right_fork;
+				fork = phi->left_fork;
 				if ((phi->number + i) % 2)
-					fork = phi->left_fork;
+					fork = phi->right_fork;
 			}
 		}
 	}
