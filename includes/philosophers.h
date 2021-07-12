@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/24 03:42:11 by lmartin           #+#    #+#             */
-/*   Updated: 2021/07/07 23:19:59 by kgale            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
@@ -68,7 +57,10 @@ typedef struct		s_params
 void	*simulation(void *args);
 void	ft_init_params(t_params *params, int argc, char *argv[]);
 void	ft_init_philosophers(t_params *params);
-void	throw_error(int error);
 void	ft_usleep(unsigned int n);
+void	ft_error(t_params *params);
+void	ft_exit(t_params *phi);
+void	print_res(char *line, int number,
+struct timeval *t1, struct timeval *t2);
 
 #endif

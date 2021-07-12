@@ -79,7 +79,7 @@ void	ft_init_params(t_params *params, int argc, char *argv[])
 	else
 		params->times->meal_number = -1;
 	params->philosophers = malloc(sizeof(t_philosopher));
-	if (params->times->philo_number < 2 || params->times->meal_number == 0
+	if (params->times->philo_number < 1 || params->times->meal_number == 0
 		|| !(params->philosophers))
 	{
 		printf("Error: Wrong arguments. the simulation won't work\n");
