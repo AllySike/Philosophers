@@ -6,7 +6,7 @@
 /*   By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/16 18:58:31 by lmartin           #+#    #+#             */
-/*   Updated: 2021/07/07 23:24:57 by kgale            ###   ########.fr       */
+/*   Updated: 2021/07/12 12:54:50 by kgale            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,9 @@ int	wait_philosophers(t_params *phi)
 
 	number = phi->times->meal_number;
 	ptr = phi->philosophers;
-	c = 0;
-	if (ptr->meal_count >= number)
-		c += 1;
-	while (ptr && !usleep(1000) && c > -2)
+
+	while (ptr && !usleep(1000))
+	{
 		if (!ptr->last_meal_time || !ptr->next)
 		{
 			if (ptr->last_meal_time && c < phi->times->philo_number)
@@ -51,6 +50,7 @@ int	wait_philosophers(t_params *phi)
 		}
 		else
 			ptr = ptr->next;
+	}
 	c = 0;
 	ptr = phi->philosophers;
 	while (c < phi->times->philo_number)
@@ -70,8 +70,6 @@ int	wait_philosophers(t_params *phi)
 				ptr = phi->philosophers;
 			else
 				ptr = NULL;
-//			ptr = !(c *= 0) ? phi->philosophers : NULL;
-
 		}
 	}
 	return (0);
@@ -92,7 +90,6 @@ void	clean_philosopher(t_philosopher *phi)
 	 free(phi->last_meal_time);
 	 free(phi);
 }
-
 int	clean_all(t_params *phi)
 {
 	void			*temp;
@@ -114,6 +111,35 @@ int	clean_all(t_params *phi)
 	return (0);
 }
 
+void	unmake_pairs(t_params *phi)
+{
+	t_philosopher	*temp;
+	t_philosopher	*ptr;
+	t_philosopher	*odd;
+	t_philosopher	*even;
+
+	ptr = phi->philosophers;
+	odd = phi->philosophers;
+	temp = phi->philosophers->next;
+	even = phi->philosophers->next;
+	while (ptr)
+	{
+		if (ptr->number % 2 && ptr->number != 1)
+		{
+			odd->next = ptr;
+			odd = odd->next;
+		}
+		else if (!(ptr->number % 2) && ptr->number != 2)
+		{
+			even->next = ptr;
+			even = even->next;
+		}
+		ptr = ptr->next;
+	}
+	odd->next = temp;
+	even->next = NULL;
+}
+
 int	main(int argc, char *argv[])
 {
 	int				ret;
@@ -129,7 +155,7 @@ int	main(int argc, char *argv[])
 	if (!params.times->meal_number)
 		return (clean_all(&params));
 	ft_init_philosophers(&params);
-//	unmake_pairs(&params);
+	 unmake_pairs(&params);
 	tmp = params.philosophers;
 	while (tmp)
 	{
@@ -138,5 +164,4 @@ int	main(int argc, char *argv[])
 	}
 	wait_philosophers(&params);
 	usleep(100000);
-//	clean_all(&params);
 }

@@ -36,6 +36,8 @@ static	void	helper(t_philosopher *tmp, t_params *params)
 		ft_malloc(tmp, prev, i, params);
 		if (!tmp)
 			exit(-1);//printf("Error with malloc\n");
+		tmp->left_fork->last_numb = 0;
+		tmp->right_fork->last_numb = 0;
 		tmp->number = i;
 		tmp->meal_count = 0;
 		tmp->last_meal_time->tv_sec = params->times->start_time->tv_sec;

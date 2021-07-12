@@ -71,6 +71,5 @@ void	ft_init_params(t_params *params, int argc, char *argv[]);
 void	ft_init_philosophers(t_params *params);
 void	throw_error(int error);
 void	ft_usleep(unsigned int n);
-void	thinking(t_philosopher *phi);
 
 #endif
