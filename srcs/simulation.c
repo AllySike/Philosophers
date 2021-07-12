@@ -6,7 +6,7 @@
 /*   By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 17:28:22 by kgale             #+#    #+#             */
-/*   Updated: 2021/07/12 18:34:34 by kgale            ###   ########.fr       */
+/*   Updated: 2021/07/12 19:48:47 by kgale            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	eating(t_philosopher *phi)
 		phi->times->start_time);
 	phi->meal_count++;
 	ft_usleep(phi->times->eat_time * 1000);
-	if (pthread_mutex_unlock(phi->right_fork->mutex))
+	if (phi->right_fork && pthread_mutex_unlock(phi->right_fork->mutex))
 		printf("Error with mutex\n");
 	if (pthread_mutex_unlock(phi->left_fork->mutex))
 		printf("Error with getting time\n");
@@ -46,6 +46,14 @@ static int	check_eating(t_philosopher *phi)
 			phi->times->start_time);
 		phi->last_meal_time = NULL;
 	}
+	if (!phi->right_fork)
+	{
+		{
+			free(phi->last_meal_time);
+			printf("%d %d died\n", phi->times->die_time, phi->number);
+			phi->last_meal_time = NULL;
+		}
+	}
 	ret = eating(phi);
 	return (ret);
 }
@@ -57,10 +65,10 @@ void	taking_forks(t_philosopher *phi)
 	struct timeval	time_act;
 
 	i = 0;
-	fork = phi->left_fork;
+	fork = phi->right_fork;
 	if ((phi->number + i) % 2)
-		fork = phi->right_fork;
-	while (i < 2)
+		fork = phi->left_fork;
+	while (i < 2 && fork)
 	{
 		if (fork->last_numb != phi->number)
 		{
@@ -71,9 +79,9 @@ void	taking_forks(t_philosopher *phi)
 			fork->last_numb = phi->number;
 			if (++i != 2)
 			{
-				fork = phi->left_fork;
+				fork = phi->right_fork;
 				if ((phi->number + i) % 2)
-					fork = phi->right_fork;
+					fork = phi->left_fork;
 			}
 		}
 	}

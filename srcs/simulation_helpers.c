@@ -31,11 +31,11 @@ void	ft_usleep(unsigned int n)
 void	print_res(char *line, int number,
 struct timeval *t1, struct timeval *t2)
 {
-	int	time;
+	unsigned long long	time;
 
-	time = (int)(t1->tv_sec
+	time = (unsigned long long)(t1->tv_sec
 			- t2->tv_sec) *1000
 		+ (t1->tv_usec
 			- t2->tv_usec) * 0.001;
-	printf("%dms %d %s\n", time, number, line);
+	printf("%llums %d %s\n", time, number, line);
 }

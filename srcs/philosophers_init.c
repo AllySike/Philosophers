@@ -41,16 +41,20 @@ t_philosopher	*prev, int i, t_params *params)
 		tmp->left_fork = prev->right_fork;
 	else
 		tmp->left_fork = malloc(sizeof(t_fork));
-	if (i == params->times->philo_number)
+	if (i == params->times->philo_number && params->times->philo_number > 1)
 		tmp->right_fork = params->philosophers->left_fork;
-	else
+	else if (params->times->philo_number > 1)
 		tmp->right_fork = malloc(sizeof(t_fork));
-	if (!tmp->thread || !tmp->right_fork || !tmp->left_fork
-		|| !tmp->last_meal_time)
+	else
+		tmp->right_fork = NULL;
+	if (!tmp->thread || (!tmp->right_fork && params->times->philo_number > 1)
+		|| !tmp->left_fork || !tmp->last_meal_time)
 		ft_error(params);
-	tmp->right_fork->mutex = malloc(sizeof(pthread_mutex_t));
-	if (!tmp->right_fork->mutex
-		|| pthread_mutex_init(tmp->right_fork->mutex, NULL))
+	tmp->left_fork->mutex = malloc(sizeof(pthread_mutex_t));
+	if (!tmp->left_fork->mutex
+		|| pthread_mutex_init(tmp->left_fork->mutex, NULL))
+		ft_error(params);
+	if (!tmp)
 		ft_error(params);
 }
 
@@ -62,9 +66,9 @@ static void	unmake_pairs(t_params *phi)
 	t_philosopher	*even;
 
 	ptr = phi->philosophers;
-	odd = phi->philosophers;
+	odd = ptr;
 	temp = phi->philosophers->next;
-	even = phi->philosophers->next;
+	even = temp;
 	while (ptr)
 	{
 		if (ptr->number % 2 && ptr->number != 1)
@@ -93,10 +97,9 @@ static	void	helper(t_philosopher *tmp, t_params *params)
 	while (i <= params->times->philo_number)
 	{
 		ft_malloc(tmp, prev, i, params);
-		if (!tmp)
-			ft_error(params);
 		tmp->left_fork->last_numb = 0;
-		tmp->right_fork->last_numb = 0;
+		if (tmp->right_fork)
+			tmp->right_fork->last_numb = 0;
 		tmp->number = i;
 		tmp->meal_count = 0;
 		tmp->last_meal_time->tv_sec = params->times->start_time->tv_sec;
@@ -122,5 +125,6 @@ void	ft_init_philosophers(t_params *params)
 	gettimeofday(params->times->start_time, NULL);
 	tmp = params->philosophers;
 	helper(tmp, params);
-	unmake_pairs(params);
+	if (params->times->philo_number > 1)
+		unmake_pairs(params);
 }
