@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/12 17:28:27 by kgale             #+#    #+#             */
+/*   Updated: 2021/07/12 17:28:28 by kgale            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	ft_error(t_params *params)
@@ -7,7 +19,7 @@ void	ft_error(t_params *params)
 	exit(0);
 }
 
-void	wait_philosophers_utils(t_params *phi)
+static void	wait_philosophers_utils(t_params *phi)
 {
 	int				c;
 	t_philosopher	*ptr;
@@ -35,7 +47,7 @@ void	wait_philosophers_utils(t_params *phi)
 	}
 }
 
-void	wait_philosophers(t_params *phi)
+static void	wait_philosophers(t_params *phi)
 {
 	t_philosopher	*ptr;
 

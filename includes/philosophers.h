@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/12 17:28:18 by kgale             #+#    #+#             */
+/*   Updated: 2021/07/12 17:29:36 by kgale            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
@@ -10,14 +21,6 @@
 # include <string.h>
 # include <fcntl.h>
 # include <stdio.h>
-
-# define TOO_MANY_ARGS -3
-# define WRONG_ARG -4
-# define ERROR_MALLOC -5
-# define ERROR_MUTEX -6
-# define ERROR_PTHREAD -7
-# define ERROR_SLEEP -8
-# define ERROR_TIMEOFDAY -9
 
 typedef struct s_fork
 {
@@ -35,8 +38,7 @@ typedef struct s_times
 	struct timeval	*start_time;
 }				t_times;
 
-
-typedef struct		s_philosopher
+typedef struct s_philosopher
 {
 	int				number;
 	pthread_t		*thread;
@@ -48,7 +50,7 @@ typedef struct		s_philosopher
 	void			*next;
 }					t_philosopher;
 
-typedef struct		s_params
+typedef struct s_params
 {
 	t_times			*times;
 	t_philosopher	*philosophers;
@@ -61,6 +63,7 @@ void	ft_usleep(unsigned int n);
 void	ft_error(t_params *params);
 void	ft_exit(t_params *phi);
 void	print_res(char *line, int number,
-struct timeval *t1, struct timeval *t2);
+			struct timeval *t1, struct timeval *t2);
+void	clean_philosopher(t_philosopher *phi);
 
 #endif
