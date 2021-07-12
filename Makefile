@@ -6,12 +6,12 @@
 #    By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/17 13:10:53 by lmartin           #+#    #+#              #
-#    Updated: 2021/07/12 13:46:17 by kgale            ###   ########.fr        #
+#    Updated: 2021/07/12 19:51:39 by kgale            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	gcc
-CC_FLAGS	=	#-Wall -Wextra -Werror
+CC_FLAGS	=	-Wall -Wextra -Werror
 RM			=	rm -rf
 DIR_HEADERS =	./includes/
 DIR_SRCS	=	./srcs/
@@ -21,7 +21,7 @@ SRCS			=	philosophers.c \
 					simulation.c \
 					simulation_helpers.c
 OBJS 		=	$(SRCS:%.c=$(DIR_OBJS)%.o)
-NAME 		=	philosophers
+NAME 		=	philo
 
 all:			$(NAME)
 
