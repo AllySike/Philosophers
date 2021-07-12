@@ -8,7 +8,7 @@ t_philosopher	*prev, int i, t_params *params)
 	if (prev)
 		tmp->left_fork = prev->right_fork;
 	else
-		tmp->left_fork = malloc (sizeof(t_fork));
+		tmp->left_fork = malloc(sizeof(t_fork));
 	if (i == params->times->philo_number)
 		tmp->right_fork = params->philosophers->left_fork;
 	else
@@ -17,10 +17,8 @@ t_philosopher	*prev, int i, t_params *params)
 		|| !tmp->last_meal_time)
 		exit(-1);// function
 	tmp->right_fork->mutex = malloc(sizeof(pthread_mutex_t));
-	tmp->last_meal_mutex = malloc(sizeof(pthread_mutex_t));
-	if (!tmp->right_fork->mutex || !tmp->last_meal_mutex
-		|| pthread_mutex_init(tmp->right_fork->mutex, NULL)
-		|| pthread_mutex_init(tmp->last_meal_mutex, NULL))
+	if (!tmp->right_fork->mutex
+		|| pthread_mutex_init(tmp->right_fork->mutex, NULL))
 		exit(-1);//should be a function
 }
 

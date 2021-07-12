@@ -54,7 +54,6 @@ typedef struct		s_philosopher
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	struct timeval	*last_meal_time;
-	pthread_mutex_t	*last_meal_mutex;
 	t_times			*times;
 	int				meal_count;
 	void			*next;

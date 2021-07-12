@@ -6,7 +6,7 @@
 #    By: kgale <kgale@student.21-school.ru>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/17 13:10:53 by lmartin           #+#    #+#              #
-#    Updated: 2021/07/01 21:08:15 by kgale            ###   ########.fr        #
+#    Updated: 2021/07/12 13:46:17 by kgale            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ NAME 		=	philosophers
 all:			$(NAME)
 
 $(NAME):		$(OBJS)
-				@$(CC) $(CC_FLAGS) -I $(DIR_HEADERS) $(OBJS) -o $(NAME) -lpthread
+				@$(CC) $(CC_FLAGS) -v -I $(DIR_HEADERS) $(OBJS) -o $(NAME) -lpthread
 
 $(OBJS):		| $(DIR_OBJS)
 

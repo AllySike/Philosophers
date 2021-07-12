@@ -3,15 +3,10 @@
 
 int			eating(t_philosopher *phi)
 {
-	int		ret;
 	int time;
 
 	if (!phi->last_meal_time)
-	{
-//		if (pthread_mutex_unlock(phi->last_meal_mutex))
-//			throw_error(ERROR_MUTEX);
 		return (1);
-	}
 	if (gettimeofday(phi->last_meal_time, NULL))
 		throw_error(ERROR_TIMEOFDAY);
 	time = (int)(phi->last_meal_time->tv_sec - phi->times->start_time->tv_sec) *1000
@@ -19,8 +14,10 @@ int			eating(t_philosopher *phi)
 	printf("%dms %d is esting\n", time, phi->number);
 	phi->meal_count++;
 	ft_usleep(phi->times->eat_time * 1000);
-//	if (pthread_mutex_unlock(phi->last_meal_mutex))
-//		throw_error(ERROR_MUTEX);
+	if (pthread_mutex_unlock(phi->right_fork->mutex))
+		throw_error(ERROR_MUTEX);
+	if (pthread_mutex_unlock(phi->left_fork->mutex))
+		throw_error(ERROR_MUTEX);
 	return (0);
 }
 
@@ -32,8 +29,6 @@ int			check_eating(t_philosopher *phi)
 
 	if (gettimeofday(&time_action, NULL))
 		throw_error(ERROR_TIMEOFDAY);
-//	if (pthread_mutex_lock(phi->last_meal_mutex))
-//		throw_error(ERROR_MUTEX);
 	if (!phi->last_meal_time || ((size_t)((time_action.tv_sec -
 	                                       phi->last_meal_time->tv_sec) * 1000 + (time_action.tv_usec -
 	                                                                              phi->last_meal_time->tv_usec) * 0.001) > phi->times->die_time))
@@ -45,10 +40,6 @@ int			check_eating(t_philosopher *phi)
 		phi->last_meal_time = NULL;
 	}
 	ret = eating(phi);
-	if (pthread_mutex_unlock(phi->right_fork->mutex))
-		throw_error(ERROR_MUTEX);
-	if (pthread_mutex_unlock(phi->left_fork->mutex))
-		throw_error(ERROR_MUTEX);
 	return (ret);
 }
 
@@ -65,10 +56,8 @@ void			 taking_forks(t_philosopher *phi)
 	{
 		if (fork->last_numb != phi->number)
 		{
-			if (pthread_mutex_lock(fork->mutex))
+			if (pthread_mutex_lock(fork->mutex) || gettimeofday(&time_action, NULL))
 				throw_error(ERROR_MUTEX);
-			if (gettimeofday(&time_action, NULL))
-				throw_error(ERROR_TIMEOFDAY);
 			time = (int)(time_action.tv_sec - phi->times->start_time->tv_sec) *1000
 			       + (time_action.tv_usec - phi->times->start_time->tv_usec) * 0.001;
 			printf("%dms %d has taken a fork\n", time, phi->number);
